@@ -1,20 +1,20 @@
-# ? Custom Reward Extension for [verl](https://github.com/volcengine/verl)
+# Custom Reward Extension for [verl](https://github.com/volcengine/verl)
 
-## ? 简介
+## 简介
 
 官方版本的 **verl** 框架中不支持通过 API 对模型的 response 进行打分，也不支持自定义的 LLM 打分机制。  
 为了使 **rollout 过程中的 reward 更加模块化与可扩展**，本仓库对 verl 进行了拓展：
 
-- ? 将 reward 模块独立出来，提供统一的 `reward_api` 接口。  
-- ? 支持 **LLM-as-Judge**，可自定义提示词模板（prompt template）。  
-- ? 更易于集成 rule-based、LLM-based 或混合打分逻辑。  
+-  将 reward 模块独立出来，提供统一的 `reward_api` 接口。  
+-  支持 **LLM-as-Judge**，可自定义提示词模板（prompt template）。  
+-  更易于集成 rule-based、LLM-based 或混合打分逻辑。  
 
 ---
 
-## ?? 使用方法
+##  使用方法
 
 1. **参考 verl 官方文档** 配置基础环境  
-   ? [Verl 官方环境配置说明](https://verl.readthedocs.io/en/latest/getting_started/installation.html)
+    [Verl 官方环境配置说明](https://verl.readthedocs.io/en/latest/getting_started/installation.html)
 
 2. 进入本模块目录：
 
@@ -26,7 +26,7 @@
 
 # Reward API 使用说明与训练流程
 
-## ? 第三步：启动 Reward API（若使用 LLM-as-Judge 模式）
+##  第三步：启动 Reward API（若使用 LLM-as-Judge 模式）
 
 若你希望使用 **LLM-as-Judge** 来对模型生成的 response 进行自动化评估，请在终端进入 `reward_part` 目录后执行以下命令：
 
@@ -50,7 +50,7 @@ Use Ctrl+C to stop the server.
 
 这表示你调用大模型作为评分者服务已成功启动。此时，训练脚本中的 `reward_part.reward_api` 参数即可指向该地址，从而在强化学习过程中动态获取评分。
 
-> ? 提示：  
+>  提示：  
 >
 > - 若你计划使用基于规则的打分逻辑（rule-based reward），请跳过此步并直接执行下一步。  
 >
@@ -62,7 +62,7 @@ Use Ctrl+C to stop the server.
 
 ---
 
-## ? 第四步：启动自定义规则打分服务
+##  第四步：启动自定义规则打分服务
 
 若你希望采用自定义的基于规则的打分逻辑（例如关键字匹配、正则判断、数值范围评分等），请修改`rw_custom.py`执行：
 
@@ -78,7 +78,7 @@ Custom Rule-Based Reward API listening on: http://0.0.0.0:6010/get_reward
 
 ---
 
-## ? 第五步：修改训练脚本端口地址
+##  第五步：修改训练脚本端口地址
 
 复制第 4 步终端中输出的接口地址，替换掉下面会给出的脚本的`reward_api`部分：
 
@@ -90,7 +90,7 @@ reward_model.reward_api=http://0.0.0.0:6009/get_reward2
 
 ---
 
-## ? 第六步：执行训练命令
+##  第六步：执行训练命令
 
 在修改完成后，运行以下命令以启动 GRPO 训练：
 
@@ -102,7 +102,7 @@ bash ./train_grpo_cr.sh
 
 ---
 
-## ? 训练脚本示例
+##  训练脚本示例
 
 ```bash
 # train grpo use custom reward api
@@ -177,17 +177,17 @@ python3 -m verl.trainer.main_ppo \
 
 ---
 
-## ? 功能总结
+##  功能总结
 
 | 模块                       | 功能                             | 可自定义          |
 | -------------------------- | -------------------------------- | ----------------- |
-| `reward_part/call_api.py`  | 启动 LLM-as-Judge 的 reward 服务 | ? Prompt 模板     |
-| `reward_part/rw_custom.py` | 自定义 reward 实现（`rm-based reward or rule-based reward`）          | ? 规则逻辑        |
-| `verl_custom_train.sh`     | 调用自定义 reward 的训练入口     | ? Reward API 地址 |
+| `reward_part/call_api.py`  | 启动 LLM-as-Judge 的 reward 服务 |  Prompt 模板     |
+| `reward_part/rw_custom.py` | 自定义 reward 实现（`rm-based reward or rule-based reward`）          |  规则逻辑        |
+| `verl_custom_train.sh`     | 调用自定义 reward 的训练入口     |  Reward API 地址 |
 
 ---
 
-## ? 延伸阅读
+##  延伸阅读
 
 - [verl 官方仓库](https://github.com/volcengine/verl)  
 - [Verl 文档中心](https://verl.readthedocs.io/en/latest/)
